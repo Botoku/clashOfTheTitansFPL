@@ -1,7 +1,7 @@
 import Entry from "@/lib/models/EntryModel";
 import connectionToDB from "@/lib/mongoose";
 import React from "react";
-
+export const dynamic = "force-dynamic";
 type Users = {
   firstName: string;
   lastName: string;
