@@ -34,10 +34,14 @@ const page = async () => {
       <h1 className="text-lg mb-4">User List Page</h1>
       <div>
         {users?.map((user, i) => (
-          <div key={i} className="mb-4 border-b border-amber-600">
+          <div key={i} className="mb-4 border-b">
             <p>Firstname:{user.firstName}</p>
             <p>Lastname: {user.lastName}</p>
             <p>FplTeam: {user.fplTeam}</p>
+            <p>{user.category}</p>
+            <p>{user.phoneNumber}</p>
+            <p>TW: {user.twitter}</p>
+            <p>Insta: {user.instagram}</p>
             <img className="w-32 h-32" src={user.imageUrl} alt="" />
           </div>
         ))}

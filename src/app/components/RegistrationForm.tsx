@@ -1,5 +1,6 @@
 "use client";
 import React, { ChangeEvent, useState } from "react";
+import Loading from "./LoadingComponent";
 
 const RegistrationForm = () => {
   const [firstName, setfirstName] = useState("");
@@ -10,6 +11,10 @@ const RegistrationForm = () => {
   const [instagram, setinstagram] = useState("");
   const [fplTeam, setfplTeam] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
+  const [uploading, setUploading] = useState(false);
+
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const options = ["general", "h2h", "legends", "worldClass"];
 
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
@@ -17,6 +22,7 @@ const RegistrationForm = () => {
   const handleFormSubmit = async () => {
     if (!file) return;
 
+    setUploading(true);
     const formData = new FormData();
     formData.append("file", file);
 
@@ -42,11 +48,12 @@ const RegistrationForm = () => {
               twitter,
               instagram,
               fplTeam,
-              category: "category",
+              category: selectedOptions.join(", "),
               imageUrl: `https://clash-of-the-titans-fpl.s3.us-east-1.amazonaws.com/${fileName}`,
             }),
           });
           if (res.status === 200) {
+            setUploading(false);
             setResponseMessage("Submission SuccessFul");
             setfirstName("");
             setlastName("");
@@ -61,6 +68,7 @@ const RegistrationForm = () => {
         }
       }
     } catch (error) {
+      setUploading(false);
       console.log(error);
     }
   };
@@ -76,12 +84,22 @@ const RegistrationForm = () => {
       setFile(selectedFile || null);
     }
   };
+  const handleToggle = (option: string) => {
+    if (selectedOptions.includes(option)) {
+      setSelectedOptions(selectedOptions.filter((item) => item !== option));
+    } else {
+      setSelectedOptions([...selectedOptions, option]);
+    }
+  };
 
   return (
     <>
       <form
-        action={handleFormSubmit}
-        className="w-max bg-gray-400 mx-auto px-8 py-5"
+      onSubmit={e => {
+        e.preventDefault()
+        handleFormSubmit()
+      }}
+        className="w-max bg-gray-400 mx-auto px-2 lg:px-6 py-5"
       >
         <div className="flex flex-col mb-3">
           <label htmlFor="firstname">First Name</label>
@@ -160,36 +178,51 @@ const RegistrationForm = () => {
             id="fplTeam"
           />
         </div>
+
         <div>
-          <label htmlFor="">Category</label>
-          <select
-            defaultValue={["general"]}
-            multiple={true}
-            name="category"
-            id=""
-          >
-            <option value="">
-              Please select what league you are paying for
-            </option>
-            <option value="general">general 4000</option>
-            <option value="h2h">h2h 2500</option>
-            <option value="legends">legends 20,000</option>
-            <option value="worldClass">world Class 10,000</option>
-          </select>
+          <ul className="space-y-2">
+            {options.map((option) => (
+              <li key={option} className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id={option}
+                  checked={selectedOptions.includes(option)}
+                  onChange={() => handleToggle(option)}
+                  className="h-4 w-4"
+                />
+                <label htmlFor={option} className="cursor-pointer">
+                  {option}
+                </label>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div>
-          <input type="file" accept="image/*" onChange={handleFileChange} />
+          <input
+            className="my-3 cursor-pointer"
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
 
-          <p>Max 5MB</p>
+          <p className="mb-3">Max 5MB</p>
           {error && <>{error}</>}
         </div>
+        {uploading && (
+          <div className="w-full flex justify-center items-center">
+            <Loading />
+          </div>
+        )}
 
         {responseMessage ? (
-          responseMessage
+          <p className="font-bold w-max mx-auto">
+
+            {responseMessage}
+          </p>
         ) : (
           <button
-            className="bg-[#3B1B5E] text-white px-3 py-2 cursor-pointer"
+            className="bg-[#3B1B5E] text-white px-3 py-2 cursor-pointer mx-auto"
             type="submit"
           >
             Submit
