@@ -11,7 +11,6 @@ const RegistrationForm = ({}: Props) => {
   const [instagram, setinstagram] = useState("");
   const [fplTeam, setfplTeam] = useState("");
   const [category, setcategory] = useState([]);
-  const [imageUrl, setImageUrl] = useState("");
 
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -76,10 +75,11 @@ const RegistrationForm = ({}: Props) => {
 
   return (
     <>
-      <form action={handleFormSubmit}>
-        <div>
-          <label htmlFor="firstname">firstname</label>
+      <form action={handleFormSubmit} className="w-max bg-gray-400 mx-auto px-8 py-5">
+        <div className="flex flex-col mb-3">
+          <label htmlFor="firstname">First Name</label>
           <input
+            className="border-b border-[#3B1B5E] inline-block"
             value={firstName}
             onChange={(e) => setfirstName(e.target.value)}
             type="text"
@@ -87,9 +87,10 @@ const RegistrationForm = ({}: Props) => {
             id="firstname"
           />
         </div>
-        <div>
-          <label htmlFor="lastname">lastname</label>
+        <div className="flex flex-col mb-3">
+          <label htmlFor="lastname">Last Name</label>
           <input
+            className="border-b border-[#3B1B5E]"
             value={lastName}
             onChange={(e) => setlastName(e.target.value)}
             type="text"
@@ -97,9 +98,10 @@ const RegistrationForm = ({}: Props) => {
             id="lastname"
           />
         </div>
-        <div>
-          <label htmlFor="email">email</label>
+        <div className="flex flex-col mb-3">
+          <label htmlFor="email">Email</label>
           <input
+            className="border-b border-[#3B1B5E]"
             value={email}
             onChange={(e) => setemail(e.target.value)}
             type="text"
@@ -107,9 +109,10 @@ const RegistrationForm = ({}: Props) => {
             id="email"
           />
         </div>
-        <div>
-          <label htmlFor="phoneNumber">phoneNumber</label>
+        <div className="flex flex-col mb-3">
+          <label htmlFor="phoneNumber">Phone Number</label>
           <input
+            className="border-b border-[#3B1B5E]"
             value={phoneNumber}
             onChange={(e) => setphoneNumber(e.target.value)}
             type="text"
@@ -117,9 +120,10 @@ const RegistrationForm = ({}: Props) => {
             id="phoneNumber"
           />
         </div>
-        <div>
-          <label htmlFor="twitter">twitter</label>
+        <div className="flex flex-col mb-3">
+          <label htmlFor="twitter">Twitter</label>
           <input
+            className="border-b border-[#3B1B5E]"
             value={twitter}
             onChange={(e) => settwitter(e.target.value)}
             type="text"
@@ -127,9 +131,10 @@ const RegistrationForm = ({}: Props) => {
             id="twitter"
           />
         </div>
-        <div>
-          <label htmlFor="instagram">instagram</label>
+        <div className="flex flex-col mb-3">
+          <label htmlFor="instagram">Instagram</label>
           <input
+            className="border-b border-[#3B1B5E]"
             value={instagram}
             onChange={(e) => setinstagram(e.target.value)}
             type="text"
@@ -137,9 +142,10 @@ const RegistrationForm = ({}: Props) => {
             id="instagram"
           />
         </div>
-        <div>
-          <label htmlFor="fplTeam">fplTeam</label>
+        <div className="flex flex-col mb-3">
+          <label htmlFor="fplTeam">FplTeam</label>
           <input
+            className="border-b border-[#3B1B5E]"
             value={fplTeam}
             onChange={(e) => setfplTeam(e.target.value)}
             type="text"
@@ -172,7 +178,12 @@ const RegistrationForm = ({}: Props) => {
           {error && <>{error}</>}
         </div>
 
-        <button type="submit">Submit</button>
+        <button
+          className="bg-[#3B1B5E] text-white px-3 py-2 cursor-pointer"
+          type="submit"
+        >
+          Submit
+        </button>
       </form>
     </>
   );
