@@ -1,3 +1,5 @@
+import Entry from "@/lib/models/EntryModel";
+import connectionToDB from "@/lib/mongoose";
 import React from "react";
 
 type Users = {
@@ -13,9 +15,20 @@ type Users = {
 };
 
 const page = async () => {
-  const res = await fetch(`${process.env.URL}/api/userEntries`);
-  const data = await res.json();
-  const users: Users[] = data.users;
+  
+  const getUsers =async ():  Promise<Users[]> => {
+    try {
+      await connectionToDB();
+      const users = await Entry.find({});
+      return users as Users[]
+      
+    } catch (error) {
+      console.log(error);
+      return []
+    }
+  };
+  const users: Users[] = await getUsers() || [];
+  console.log(users)
   return (
     <div>
       <h1 className="text-lg mb-4">User List Page</h1>
