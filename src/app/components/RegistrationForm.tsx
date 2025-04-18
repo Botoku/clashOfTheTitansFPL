@@ -198,9 +198,10 @@ const RegistrationForm = () => {
           </ul>
         </div>
 
-        <div>
+        <div className="my-3">
+          <p className="italic text-sm">Select an image below to continue</p>
           <input
-            className="my-3 cursor-pointer"
+            className=" cursor-pointer"
             type="file"
             accept="image/*"
             onChange={handleFileChange}
