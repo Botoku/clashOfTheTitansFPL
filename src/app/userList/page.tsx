@@ -13,7 +13,7 @@ type Users = {
 };
 
 const page = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/userEntries`);
+  const res = await fetch(`${process.env.URL}/api/userEntries`);
   const data = await res.json();
   const users: Users[] = data.users;
   return (
