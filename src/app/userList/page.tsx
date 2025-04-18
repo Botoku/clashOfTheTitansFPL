@@ -27,7 +27,7 @@ const page = async () => {
       return []
     }
   };
-  const users: Users[] = await getUsers() || [];
+  const users: Users[] = await getUsers();
   console.log(users)
   return (
     <div>
