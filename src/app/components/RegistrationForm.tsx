@@ -199,7 +199,7 @@ const RegistrationForm = () => {
         </div>
 
         <div className="my-3">
-          <p className="italic text-sm">Select an image below to continue</p>
+          <p className="italic text-sm">Upload image/screenshot of your payment receipt to continue</p>
           <input
             className=" cursor-pointer"
             type="file"
