@@ -1,5 +1,3 @@
-import Entry from "@/lib/models/EntryModel";
-import connectionToDB from "@/lib/mongoose";
 import React from "react";
 
 type Users = {
@@ -11,17 +9,13 @@ type Users = {
   instagram: string;
   fplTeam: string;
   category: string;
-  imageUrl: string
+  imageUrl: string;
 };
-const fetchUsers = async () => {
-  let users: Users[] = [];
-  users = await Entry.find({});
-  return users;
-};
+
 const page = async () => {
-  await connectionToDB()
-  const users = await fetchUsers();
-  console.log(users);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/userEntries`);
+  const data = await res.json();
+  const users: Users[] = data.users;
   return (
     <div>
       <h1 className="text-lg mb-4">User List Page</h1>

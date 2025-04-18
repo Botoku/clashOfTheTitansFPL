@@ -28,9 +28,20 @@ export async function POST(request: Request) {
       category,
       imageUrl,
     });
-
+    
     return NextResponse.json({ newEntry, status: 201 });
-} catch (error) {
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ error, status: 400 });
+  }
+}
+
+export async function GET() {
+  try {
+    await connectionToDB();
+    const users = await Entry.find({});
+    return NextResponse.json({ users, status: 200 });
+  } catch (error) {
     console.log(error)
     return NextResponse.json({ error, status: 400 });
   }
