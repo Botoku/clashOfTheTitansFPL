@@ -9,15 +9,13 @@ const RegistrationForm = () => {
   const [twitter, settwitter] = useState("");
   const [instagram, setinstagram] = useState("");
   const [fplTeam, setfplTeam] = useState("");
+  const [responseMessage, setResponseMessage] = useState("");
 
   const [file, setFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
   const handleFormSubmit = async () => {
     if (!file) return;
-
-    setUploading(true);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -48,14 +46,22 @@ const RegistrationForm = () => {
               imageUrl: `https://clash-of-the-titans-fpl.s3.us-east-1.amazonaws.com/${fileName}`,
             }),
           });
+          if (res.status === 200) {
+            setResponseMessage("Submission SuccessFul");
+            setfirstName("");
+            setlastName("");
+            setemail("");
+            setphoneNumber("");
+            settwitter("");
+            setinstagram("");
+            setfplTeam("");
+          }
         } catch (error) {
           console.log(error);
         }
       }
-      setUploading(false);
     } catch (error) {
       console.log(error);
-      setUploading(false);
     }
   };
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +79,10 @@ const RegistrationForm = () => {
 
   return (
     <>
-      <form action={handleFormSubmit} className="w-max bg-gray-400 mx-auto px-8 py-5">
+      <form
+        action={handleFormSubmit}
+        className="w-max bg-gray-400 mx-auto px-8 py-5"
+      >
         <div className="flex flex-col mb-3">
           <label htmlFor="firstname">First Name</label>
           <input
@@ -176,12 +185,16 @@ const RegistrationForm = () => {
           {error && <>{error}</>}
         </div>
 
-        <button
-          className="bg-[#3B1B5E] text-white px-3 py-2 cursor-pointer"
-          type="submit"
-        >
-          Submit
-        </button>
+        {responseMessage ? (
+          responseMessage
+        ) : (
+          <button
+            className="bg-[#3B1B5E] text-white px-3 py-2 cursor-pointer"
+            type="submit"
+          >
+            Submit
+          </button>
+        )}
       </form>
     </>
   );

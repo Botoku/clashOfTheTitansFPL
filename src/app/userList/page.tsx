@@ -31,7 +31,7 @@ const page = async () => {
             <p>Firstname:{user.firstName}</p>
             <p>Lastname: {user.lastName}</p>
             <p>FplTeam: {user.fplTeam}</p>
-            <img src={user.imageUrl} alt="" />
+            <img className="w-32 h-32" src={user.imageUrl} alt="" />
           </div>
         ))}
       </div>
