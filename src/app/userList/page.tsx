@@ -2,7 +2,6 @@ import Entry from "@/lib/models/EntryModel";
 import connectionToDB from "@/lib/mongoose";
 import React from "react";
 
-type Props = {};
 type Users = {
   firstName: string;
   lastName: string;
@@ -19,7 +18,7 @@ const fetchUsers = async () => {
   users = await Entry.find({});
   return users;
 };
-const page = async (props: Props) => {
+const page = async () => {
   await connectionToDB()
   const users = await fetchUsers();
   console.log(users);

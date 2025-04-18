@@ -1,8 +1,7 @@
 "use client";
-import React, { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 
-type Props = {};
-const RegistrationForm = ({}: Props) => {
+const RegistrationForm = () => {
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [email, setemail] = useState("");
@@ -10,7 +9,6 @@ const RegistrationForm = ({}: Props) => {
   const [twitter, settwitter] = useState("");
   const [instagram, setinstagram] = useState("");
   const [fplTeam, setfplTeam] = useState("");
-  const [category, setcategory] = useState([]);
 
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);

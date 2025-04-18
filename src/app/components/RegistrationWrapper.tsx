@@ -1,9 +1,8 @@
 
 import RegistrationForm from "./RegistrationForm";
 
-type Props = {};
 
-const RegistrationWrapper = (props: Props) => {
+const RegistrationWrapper = () => {
   return (
     <div>
       <RegistrationForm  />
