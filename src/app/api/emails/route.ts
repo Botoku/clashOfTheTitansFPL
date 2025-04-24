@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   const recepients = [
     {
       name: "Jared FPL",
-      address: "jbotoku@gmail.com",
+      address: "bekeeprecious29@gmail.com",
     },
   ];
 
