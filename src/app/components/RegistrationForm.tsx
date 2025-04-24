@@ -44,7 +44,7 @@ const RegistrationForm = () => {
               firstName,
               lastName,
               email,
-              phoneNumber,
+              phoneNumber: new Number(phoneNumber),
               twitter,
               instagram,
               fplTeam,
@@ -54,6 +54,20 @@ const RegistrationForm = () => {
           });
           if (res.status === 200) {
             setUploading(false);
+            fetch('/api/emails', {
+              method: "POST",
+              body: JSON.stringify({
+                firstName,
+                lastName,
+                email,
+                phoneNumber,
+                twitter,
+                instagram,
+                fplTeam,
+                category: selectedOptions.join(", "),
+                imageUrl: `https://clash-of-the-titans-fpl.s3.us-east-1.amazonaws.com/${fileName}`,
+              })
+            })
             setResponseMessage("Submission SuccessFul");
             setfirstName("");
             setlastName("");
