@@ -1,8 +1,9 @@
 import Entry from "@/lib/models/EntryModel";
 import connectionToDB from "@/lib/mongoose";
 import React from "react";
+import ExportToExcel from "../components/ExportToExcel";
 export const dynamic = "force-dynamic";
-type Users = {
+export type Users = {
   firstName: string;
   lastName: string;
   email: string;
@@ -19,7 +20,8 @@ const page = async () => {
   const getUsers =async ():  Promise<Users[]> => {
     try {
       await connectionToDB();
-      const users = await Entry.find({});
+      const userData = await Entry.find({});
+      const users = JSON.parse(JSON.stringify(userData))
       return users as Users[]
       
     } catch (error) {
@@ -32,6 +34,7 @@ const page = async () => {
   return (
     <div>
       <h1 className="text-lg mb-4">User List Page</h1>
+      <ExportToExcel users={(users)} />
       <div>
         {users?.map((user, i) => (
           <div key={i} className="mb-4 border-b">
