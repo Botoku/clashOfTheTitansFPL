@@ -12,6 +12,7 @@ export const onGetExport = async (data:Users[],title?: string, worksheetname?: s
             phoneNumber: info.phoneNumber, 
             instagram: info.instagram,
             twitter: info.twitter, 
+            linkToReceipt: info.imageUrl
 
         }))
 
