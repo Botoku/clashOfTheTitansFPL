@@ -4,7 +4,7 @@ import * as XLSX from "xlsx"
 export const onGetExport = async (data:Users[],title?: string, worksheetname?: string) => {
     const getCategory = (category:string, checkFor:string) => {
         if(category.includes(checkFor)) return "Yes"
-        else return "No"
+        else return ""
     }
     try {
         const dataToExport = data.map((info) => ({
