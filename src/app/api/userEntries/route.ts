@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       firstName,
       lastName,
       email,
-      phoneNumber: Number(phoneNumber),
+      phoneNumber: (phoneNumber),
       twitter,
       instagram,
       fplTeam,

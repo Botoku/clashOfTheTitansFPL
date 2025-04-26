@@ -2,13 +2,20 @@ import { Users } from "@/app/userList/page";
 import * as XLSX from "xlsx"
 
 export const onGetExport = async (data:Users[],title?: string, worksheetname?: string) => {
+    const getCategory = (category:string, checkFor:string) => {
+        if(category.includes(checkFor)) return "Yes"
+        else return "No"
+    }
     try {
         const dataToExport = data.map((info) => ({
             firstName: info.firstName,
             lastName: info.lastName,
             email: info.email, 
             teamName: info.fplTeam,
-            category: info.category,
+            general: getCategory(info.category, "general"),
+            h2h: getCategory(info.category, "h2h"),
+            legends: getCategory(info.category, "legends"),
+            worldClass: getCategory(info.category, "worldClass"),
             phoneNumber: info.phoneNumber, 
             instagram: info.instagram,
             twitter: info.twitter, 
