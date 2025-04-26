@@ -6,7 +6,13 @@ export const onGetExport = async (data:Users[],title?: string, worksheetname?: s
         const dataToExport = data.map((info) => ({
             firstName: info.firstName,
             lastName: info.lastName,
-            teamName: info.fplTeam
+            email: info.email, 
+            teamName: info.fplTeam,
+            category: info.category,
+            phoneNumber: info.phoneNumber, 
+            instagram: info.instagram,
+            twitter: info.twitter, 
+
         }))
 
           // Create Excel workbook and worksheet
