@@ -52,7 +52,7 @@ const UserListTable = ({ users }: { users: Users[] }) => {
   };
 
   return (
-    <div className="h-screen">
+    <div className="h-[80vh]">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
