@@ -1,6 +1,6 @@
 import Entry from "@/lib/models/EntryModel";
 import connectionToDB from "@/lib/mongoose";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
@@ -44,5 +44,20 @@ export async function GET() {
   } catch (error) {
     console.log(error)
     return NextResponse.json({ error, status: 400 });
+  }
+}
+
+export async function PATCH(request:NextRequest){
+  try {
+    const data= await request.json();
+    await connectionToDB()
+
+    const newEntry = await Entry.findByIdAndUpdate(data._id, data)
+    return NextResponse.json({ newEntry, status: 200 });
+
+  } catch (error) {
+    console.log(error)
+    return NextResponse.json({ error, status: 400 });
+
   }
 }
