@@ -2,7 +2,6 @@ import Entry from "@/lib/models/EntryModel";
 import connectionToDB from "@/lib/mongoose";
 import React from "react";
 import ExportToExcel from "../components/ExportToExcel";
-import { getCategory } from "@/lib/excelConvert";
 import UserListTable from "../components/UserListTable";
 export const dynamic = "force-dynamic";
 export type Users = {
