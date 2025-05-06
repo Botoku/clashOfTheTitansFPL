@@ -3,7 +3,6 @@ import { getCategory } from "@/lib/excelConvert";
 import React, { useState } from "react";
 import { Users } from "../userList/page";
 import { useRouter } from "next/navigation";
-import { AlertCircle } from "react-feather";
 
 const UserListTable = ({ users }: { users: Users[] }) => {
   const [selectedEditUser, setSelectedEditUser] = useState<Users | null>(null);
