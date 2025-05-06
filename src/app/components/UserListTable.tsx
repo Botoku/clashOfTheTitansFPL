@@ -3,6 +3,7 @@ import { getCategory } from "@/lib/excelConvert";
 import React, { useState } from "react";
 import { Users } from "../userList/page";
 import { useRouter } from "next/navigation";
+import { AlertCircle } from "react-feather";
 
 const UserListTable = ({ users }: { users: Users[] }) => {
   const [selectedEditUser, setSelectedEditUser] = useState<Users | null>(null);
@@ -89,9 +90,9 @@ const UserListTable = ({ users }: { users: Users[] }) => {
           <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
             <th
               onClick={() => handleSort("firstName")}
-              className="cursor-pointer px-6 py-3"
+              className="cursor-pointer px-6 py-3 font text-gray-200"
             >
-              First Name{" "}
+              First Name{" "} 
               {sortConfig?.key === "firstName"
                 ? sortConfig.direction === "asc"
                   ? "↑"
@@ -102,7 +103,7 @@ const UserListTable = ({ users }: { users: Users[] }) => {
             <th className="px-6 py-3">email</th>
             <th
               onClick={() => handleSort("fplTeam")}
-              className="cursor-pointer px-6 py-3"
+              className="text-gray-200 cursor-pointer px-6 py-3"
             >
               Team Name{" "}
               {sortConfig?.key === "fplTeam"
@@ -113,7 +114,7 @@ const UserListTable = ({ users }: { users: Users[] }) => {
             </th>
             <th
               onClick={() => handleSort("clashID")}
-              className="cursor-pointer px-6 py-3"
+              className="text-gray-200 cursor-pointer px-6 py-3"
             >
               Clash ID{" "}
               {sortConfig?.key === "clashID"
