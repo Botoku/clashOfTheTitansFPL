@@ -8,6 +8,10 @@ const UserListTable = ({ users }: { users: Users[] }) => {
   const [selectedEditUser, setSelectedEditUser] = useState<Users | null>(null);
   const [formData, setFormData] = useState<Partial<Users>>({});
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [sortConfig, setSortConfig] = useState<{
+    key: keyof Users;
+    direction: "asc" | "desc";
+  } | null>(null);
   const router = useRouter();
   const handleToggle = (option: string) => {
     let updatedOptions = [];
@@ -22,8 +26,35 @@ const UserListTable = ({ users }: { users: Users[] }) => {
       category: updatedOptions.join(","),
     }));
   };
+  const handleSort = (key: keyof Users) => {
+    setSortConfig((prev) => {
+      if (prev?.key === key) {
+        return { key, direction: prev.direction === "asc" ? "desc" : "asc" };
+      }
+      return { key, direction: "asc" };
+    });
+  };
   const options = ["general", "h2h", "legends", "worldClass"];
+  const sortedUsers = React.useMemo(() => {
+    if (!sortConfig) return users;
 
+    return [...users].sort((a, b) => {
+      const aVal = a[sortConfig.key];
+      const bVal = b[sortConfig.key];
+
+      if (typeof aVal === "string" && typeof bVal === "string") {
+        return sortConfig.direction === "asc"
+          ? aVal.localeCompare(bVal)
+          : bVal.localeCompare(aVal);
+      }
+
+      if (typeof aVal === "number" && typeof bVal === "number") {
+        return sortConfig.direction === "asc" ? aVal - bVal : bVal - aVal;
+      }
+
+      return 0;
+    });
+  }, [users, sortConfig]);
   const handleEditClick = (user: Users) => {
     console.log(user);
     setSelectedEditUser(user);
@@ -45,7 +76,7 @@ const UserListTable = ({ users }: { users: Users[] }) => {
       body: JSON.stringify(finalData),
     });
     if (res.status === 200) {
-      setFormData({})
+      setFormData({});
       router.refresh();
     }
     setSelectedEditUser(null);
@@ -56,10 +87,41 @@ const UserListTable = ({ users }: { users: Users[] }) => {
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-            <th className="px-6 py-3">firstName</th>
+            <th
+              onClick={() => handleSort("firstName")}
+              className="cursor-pointer px-6 py-3"
+            >
+              First Name{" "}
+              {sortConfig?.key === "firstName"
+                ? sortConfig.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
+            </th>
             <th className="px-6 py-3">lastName</th>
             <th className="px-6 py-3">email</th>
-            <th className="px-6 py-3">teamName</th>
+            <th
+              onClick={() => handleSort("fplTeam")}
+              className="cursor-pointer px-6 py-3"
+            >
+              Team Name{" "}
+              {sortConfig?.key === "fplTeam"
+                ? sortConfig.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
+            </th>
+            <th
+              onClick={() => handleSort("clashID")}
+              className="cursor-pointer px-6 py-3"
+            >
+              Clash ID{" "}
+              {sortConfig?.key === "clashID"
+                ? sortConfig.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
+            </th>
             <th className="px-6 py-3">general</th>
             <th className="px-6 py-3">h2h</th>
             <th className="px-6 py-3">legends</th>
@@ -72,12 +134,13 @@ const UserListTable = ({ users }: { users: Users[] }) => {
           </tr>
         </thead>
         <tbody>
-          {users?.map((user, i) => (
+          {sortedUsers?.map((user, i) => (
             <tr key={i} className="mb-4 border-b">
               <td className="px-6 py-4">{user.firstName}</td>
               <td className="px-6 py-4">{user.lastName}</td>
               <td className="px-6 py-4">{user.email}</td>
               <td className="px-6 py-4">{user.fplTeam}</td>
+              <td className="px-6 py-4">{user.clashID || 0}</td>
               <td className="px-6 py-4">
                 {getCategory(user.category, "general")}
               </td>
@@ -159,6 +222,15 @@ const UserListTable = ({ users }: { users: Users[] }) => {
                 <input
                   name="fplTeam"
                   value={formData.fplTeam || ""}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="text-sm block mb-1">Clash ID</label>
+                <input
+                  name="clashID"
+                  value={formData.clashID || ""}
                   onChange={handleChange}
                   className="w-full p-2 border rounded"
                 />

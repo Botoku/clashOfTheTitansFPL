@@ -36,6 +36,10 @@ const EntrySchema = new mongoose.Schema({
   imageUrl:{
     type: String,
 
+  },
+  clashID: {
+    type: String,
+    default: "0"
   }
 });
 

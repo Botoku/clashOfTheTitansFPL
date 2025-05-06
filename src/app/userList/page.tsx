@@ -14,6 +14,7 @@ export type Users = {
   fplTeam: string;
   category: string;
   imageUrl: string;
+  clashID?: number
   _id?: string;
 };
 
