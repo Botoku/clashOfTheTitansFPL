@@ -12,6 +12,7 @@ export const onGetExport = async (data:Users[],title?: string, worksheetname?: s
             lastName: info.lastName,
             email: info.email, 
             teamName: info.fplTeam,
+            clashID: info.clashID,
             general: getCategory(info.category, "general"),
             h2h: getCategory(info.category, "h2h"),
             legends: getCategory(info.category, "legends"),
