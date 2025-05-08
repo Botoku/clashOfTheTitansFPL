@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Loading from "./LoadingComponent";
 
 const RegistrationForm = () => {
@@ -12,9 +12,16 @@ const RegistrationForm = () => {
   const [fplTeam, setfplTeam] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
   const [uploading, setUploading] = useState(false);
-
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [formValid, setFormValid] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const options = ["general", "h2h", "legends", "worldClass"];
+  const optionsList = [
+    "General - N4,000",
+    "H2H - N2,500",
+    "Legends - N20,000",
+    "WorldClass - N10,000",
+  ];
 
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
@@ -54,7 +61,7 @@ const RegistrationForm = () => {
           });
           if (res.status === 200) {
             setUploading(false);
-            fetch('/api/emails', {
+            fetch("/api/emails", {
               method: "POST",
               body: JSON.stringify({
                 firstName,
@@ -66,8 +73,8 @@ const RegistrationForm = () => {
                 fplTeam,
                 category: selectedOptions.join(", "),
                 imageUrl: `https://clash-of-the-titans-fpl.s3.us-east-1.amazonaws.com/${fileName}`,
-              })
-            })
+              }),
+            });
             setResponseMessage("Submission SuccessFul");
             setfirstName("");
             setlastName("");
@@ -105,115 +112,247 @@ const RegistrationForm = () => {
       setSelectedOptions([...selectedOptions, option]);
     }
   };
+  const validateField = (name: string, value: string) => {
+    let message = "";
+
+    switch (name) {
+      case "firstName":
+        if (!value.trim()) message = "First name is required";
+        break;
+      case "lastName":
+        if (!value.trim()) message = "Last name is required";
+        break;
+      case "email":
+        if (!value.trim() || !/\S+@\S+\.\S+/.test(value))
+          message = "Valid email is required";
+        break;
+      case "phoneNumber":
+        if (!value.trim() || !/^\d+$/.test(value))
+          message = "Valid phone number is required";
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prev) => ({ ...prev, [name]: message }));
+  };
+  const transformOptions = (option: string) => {
+    if (option === "general") return "General - N4,000";
+    if (option === "h2h") return "H2H - N2,500";
+    if (option === "legends") return "Legends - N20,000";
+    if (option === "worldClass") return "WorldClass - N10,000";
+  };
+  useEffect(() => {
+    const requiredFieldsFilled =
+      firstName.trim() &&
+      lastName.trim() &&
+      email.trim() &&
+      phoneNumber.trim() &&
+      file;
+
+    const noErrors = Object.values(errors).every((msg) => !msg);
+
+    setFormValid(!!requiredFieldsFilled && noErrors);
+  }, [firstName, lastName, email, phoneNumber, file, errors]);
 
   return (
     <>
       <form
-      onSubmit={e => {
-        e.preventDefault()
-        handleFormSubmit()
-      }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleFormSubmit();
+        }}
         className="w-max bg-gray-400 mx-auto px-2 lg:px-6 py-5"
       >
-        <div className="flex flex-col mb-3">
-          <label htmlFor="firstname">First Name</label>
-          <input
-            className="border-b border-[#3B1B5E] inline-block"
-            value={firstName}
-            onChange={(e) => setfirstName(e.target.value)}
-            type="text"
-            name="firstName"
-            id="firstname"
-          />
+        <div className="flex gap-3">
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              value={firstName}
+              onChange={(e) => setfirstName(e.target.value)}
+              onBlur={(e) => validateField("firstName", e.target.value)}
+              type="text"
+              name="firstName"
+              id="firstname"
+              className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              required
+            />
+            <label
+              htmlFor="firstname"
+              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              First Name
+            </label>
+            {errors.firstName && (
+              <span className="text-red-500 text-sm">{errors.firstName}</span>
+            )}
+          </div>
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              value={lastName}
+              onChange={(e) => setlastName(e.target.value)}
+              onBlur={(e) => validateField("lastName", e.target.value)}
+              type="text"
+              name="lastName"
+              id="lastname"
+              className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              required
+            />
+            <label
+              htmlFor="lastname"
+              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Last Name
+            </label>
+            {errors.lastName && (
+              <span className="text-red-500 text-sm">{errors.lastName}</span>
+            )}
+          </div>
         </div>
-        <div className="flex flex-col mb-3">
-          <label htmlFor="lastname">Last Name</label>
-          <input
-            className="border-b border-[#3B1B5E]"
-            value={lastName}
-            onChange={(e) => setlastName(e.target.value)}
-            type="text"
-            name="lastName"
-            id="lastname"
-          />
+        <div className="flex gap-3">
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              value={email}
+              onChange={(e) => setemail(e.target.value)}
+              onBlur={(e) => validateField("email", e.target.value)}
+              type="text"
+              name="email"
+              id="lastname"
+              className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              required
+            />
+            <label
+              htmlFor="lastname"
+              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Email
+            </label>
+            {errors.email && (
+              <span className="text-red-500 text-sm">{errors.email}</span>
+            )}
+          </div>
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              value={phoneNumber}
+              onChange={(e) => setphoneNumber(e.target.value)}
+              onBlur={(e) => validateField("phoneNumber", e.target.value)}
+              type="text"
+              name="phoneNumber"
+              id="phoneNumber"
+              className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              required
+            />
+            <label
+              htmlFor="phoneNumber"
+              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Phone Number
+            </label>
+            {errors.phoneNumber && (
+              <span className="text-red-500 text-sm">{errors.phoneNumber}</span>
+            )}
+          </div>
         </div>
-        <div className="flex flex-col mb-3">
-          <label htmlFor="email">Email</label>
-          <input
-            className="border-b border-[#3B1B5E]"
-            value={email}
-            onChange={(e) => setemail(e.target.value)}
-            type="text"
-            name="email"
-            id="email"
-          />
+        <div className="flex gap-3">
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              value={twitter}
+              onChange={(e) => settwitter(e.target.value)}
+              onBlur={(e) => validateField("twitter", e.target.value)}
+              type="text"
+              name="twitter"
+              id="twitter"
+              className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+            />
+            <label
+              htmlFor="twitter"
+              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Twitter
+            </label>
+            {errors.twitter && (
+              <span className="text-red-500 text-sm">{errors.twitter}</span>
+            )}
+          </div>
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              value={instagram}
+              onChange={(e) => setinstagram(e.target.value)}
+              onBlur={(e) => validateField("instagram", e.target.value)}
+              type="text"
+              name="instagram"
+              id="instagram"
+              className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+            />
+            <label
+              htmlFor="instagram"
+              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Instagram
+            </label>
+            {errors.instagram && (
+              <span className="text-red-500 text-sm">{errors.instagram}</span>
+            )}
+          </div>
         </div>
-        <div className="flex flex-col mb-3">
-          <label htmlFor="phoneNumber">Phone Number</label>
-          <input
-            className="border-b border-[#3B1B5E]"
-            value={phoneNumber}
-            onChange={(e) => setphoneNumber(e.target.value)}
-            type="text"
-            name="phoneNumber"
-            id="phoneNumber"
-          />
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              value={fplTeam}
+              onChange={(e) => setinstagram(e.target.value)}
+              onBlur={(e) => validateField("fplTeam", e.target.value)}
+              type="text"
+              name="fplTeam"
+              id="fplTeam"
+              className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+            />
+            <label
+              htmlFor="fplTeam"
+              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              FPL Team
+            </label>
+            {errors.fplTeam && (
+              <span className="text-red-500 text-sm">{errors.fplTeam}</span>
+            )}
+          </div>
+        <div className="flex gap-3">
+          <div >
+            <p className="text-sm">
+              Select the League class you wish to pay for:
+            </p>
+            <ul className="space-y-2">
+              {options.map((option) => (
+                <li key={option} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id={option}
+                    checked={selectedOptions.includes(option)}
+                    onChange={() => handleToggle(option)}
+                    className="h-4 w-4"
+                  />
+                  <label
+                    htmlFor={option}
+                    className="cursor-pointer text-sm italic"
+                  >
+                    {transformOptions(option)}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className="flex flex-col mb-3">
-          <label htmlFor="twitter">Twitter</label>
-          <input
-            className="border-b border-[#3B1B5E]"
-            value={twitter}
-            onChange={(e) => settwitter(e.target.value)}
-            type="text"
-            name="twitter"
-            id="twitter"
-          />
-        </div>
-        <div className="flex flex-col mb-3">
-          <label htmlFor="instagram">Instagram</label>
-          <input
-            className="border-b border-[#3B1B5E]"
-            value={instagram}
-            onChange={(e) => setinstagram(e.target.value)}
-            type="text"
-            name="instagram"
-            id="instagram"
-          />
-        </div>
-        <div className="flex flex-col mb-3">
-          <label htmlFor="fplTeam">FplTeam</label>
-          <input
-            className="border-b border-[#3B1B5E]"
-            value={fplTeam}
-            onChange={(e) => setfplTeam(e.target.value)}
-            type="text"
-            name="fplTeam"
-            id="fplTeam"
-          />
-        </div>
-
-        <div>
-          <ul className="space-y-2">
-            {options.map((option) => (
-              <li key={option} className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id={option}
-                  checked={selectedOptions.includes(option)}
-                  onChange={() => handleToggle(option)}
-                  className="h-4 w-4"
-                />
-                <label htmlFor={option} className="cursor-pointer">
-                  {option}
-                </label>
-              </li>
-            ))}
-          </ul>
-        </div>
+     
 
         <div className="my-3">
-          <p className="italic text-sm">Upload image/screenshot of your payment receipt to continue</p>
+          <p className="italic text-sm">
+            Upload image/screenshot of your payment receipt to continue
+          </p>
           <input
             className=" cursor-pointer"
             type="file"
@@ -231,14 +370,16 @@ const RegistrationForm = () => {
         )}
 
         {responseMessage ? (
-          <p className="font-bold w-max mx-auto">
-
-            {responseMessage}
-          </p>
+          <p className="font-bold w-max mx-auto">{responseMessage}</p>
         ) : (
           <button
-            className="bg-[#3B1B5E] text-white px-3 py-2 cursor-pointer mx-auto"
+            className={`bg-[#3B1B5E] text-white px-3 py-2 w-20 mx-auto ${
+              !formValid || uploading
+                ? "opacity-50 cursor-not-allowed"
+                : "cursor-pointer hover:font-bold"
+            }`}
             type="submit"
+            disabled={!formValid || uploading}
           >
             Submit
           </button>
