@@ -16,12 +16,6 @@ const RegistrationForm = () => {
   const [formValid, setFormValid] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const options = ["general", "h2h", "legends", "worldClass"];
-  const optionsList = [
-    "General - N4,000",
-    "H2H - N2,500",
-    "Legends - N20,000",
-    "WorldClass - N10,000",
-  ];
 
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
