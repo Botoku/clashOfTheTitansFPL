@@ -297,7 +297,7 @@ const RegistrationForm = () => {
           <div className="relative z-0 w-full mb-5 group">
             <input
               value={fplTeam}
-              onChange={(e) => setinstagram(e.target.value)}
+              onChange={(e) => setfplTeam(e.target.value)}
               onBlur={(e) => validateField("fplTeam", e.target.value)}
               type="text"
               name="fplTeam"
