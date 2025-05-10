@@ -69,9 +69,9 @@ const RegistrationForm = () => {
                 imageUrl: `https://clash-of-the-titans-fpl.s3.us-east-1.amazonaws.com/${fileName}`,
               }),
             });
-            setResponseMessage("Submission SuccessFul");
+            setResponseMessage("Submission SuccessFul. Redirecting to Whatsapp");
             setTimeout(() => {
-              window.open("https://chat.whatsapp.com/JC6CoqSxSxz1QFU9A6fX2B", "_blank");
+              window.open("https://chat.whatsapp.com/L8bwTpP0XMiJ4ahjAJD6Zp", "_blank");
               setfirstName("");
               setlastName("");
               setemail("");
@@ -162,7 +162,7 @@ const RegistrationForm = () => {
           e.preventDefault();
           handleFormSubmit();
         }}
-        className="w-max bg-gray-400 mx-auto px-2 lg:px-6 py-5"
+        className="bg-gray-400 mx-auto px-2 lg:px-6 py-5 max-w-screen"
       >
         <div className="flex gap-3">
           <div className="relative z-0 w-full mb-5 group">
@@ -353,7 +353,7 @@ const RegistrationForm = () => {
             Upload image/screenshot of your payment receipt to continue
           </p>
           <input
-            className=" cursor-pointer"
+            className=" cursor-pointer w-[90%]"
             type="file"
             accept="image/*"
             onChange={handleFileChange}
@@ -369,7 +369,7 @@ const RegistrationForm = () => {
         )}
 
         {responseMessage ? (
-          <p className="font-bold w-max mx-auto">{responseMessage}</p>
+          <p className="font-bold w-max mx-auto text-sm">{responseMessage}</p>
         ) : (
           <button
             className={`bg-[#3B1B5E] text-white px-3 py-2 w-20 mx-auto ${

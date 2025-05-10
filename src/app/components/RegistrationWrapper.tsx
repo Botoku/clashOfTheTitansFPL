@@ -4,7 +4,7 @@ import RegistrationForm from "./RegistrationForm";
 
 const RegistrationWrapper = () => {
   return (
-    <div>
+    <div className="max-w-screen">
       <RegistrationForm  />
     </div>
   );
