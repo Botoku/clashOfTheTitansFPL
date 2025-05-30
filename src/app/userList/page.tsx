@@ -36,7 +36,7 @@ const page = async () => {
     <div className="relative">
       <h1 className="mb-4 text-center text-4xl font-bold">User List Page</h1>
       <ExportToExcel users={users} />
-      <div className=" overflow-x-auto shadow-md sm:rounded-lg">
+      <div className=" overflow-x-auto shadow-md sm:rounded-lg h-[75vh]">
         <UserListTable users={users} />
       </div>
     </div>

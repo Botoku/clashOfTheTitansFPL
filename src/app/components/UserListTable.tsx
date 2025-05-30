@@ -3,6 +3,7 @@ import { getCategory } from "@/lib/excelConvert";
 import React, { useState } from "react";
 import { Users } from "../userList/page";
 import { useRouter } from "next/navigation";
+import { Trash2 } from "react-feather";
 
 const UserListTable = ({ users }: { users: Users[] }) => {
   const [selectedEditUser, setSelectedEditUser] = useState<Users | null>(null);
@@ -12,6 +13,8 @@ const UserListTable = ({ users }: { users: Users[] }) => {
     key: keyof Users;
     direction: "asc" | "desc";
   } | null>(null);
+
+  const [activeDelete, setActiveDelete] = useState(false);
   const router = useRouter();
   const handleToggle = (option: string) => {
     let updatedOptions = [];
@@ -56,7 +59,6 @@ const UserListTable = ({ users }: { users: Users[] }) => {
     });
   }, [users, sortConfig]);
   const handleEditClick = (user: Users) => {
-    console.log(user);
     setSelectedEditUser(user);
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +67,6 @@ const UserListTable = ({ users }: { users: Users[] }) => {
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Updated user data:", formData);
     // TODO: send updated data to server via API
     const finalData = {
       ...formData,
@@ -81,6 +82,19 @@ const UserListTable = ({ users }: { users: Users[] }) => {
     }
     setSelectedEditUser(null);
   };
+  
+  const handleUserDelete = async (userId: string) => {
+    const res = await fetch("/api/userEntries", {
+      method: "DELETE",
+      body: JSON.stringify(userId),
+    });
+    
+    if (res.status === 200) {
+      setActiveDelete(false);
+      setSelectedEditUser(null);
+      router.refresh();
+    }
+  };
 
   return (
     <div className="h-[80vh]">
@@ -91,7 +105,7 @@ const UserListTable = ({ users }: { users: Users[] }) => {
               onClick={() => handleSort("firstName")}
               className="cursor-pointer px-6 py-3 font text-gray-200"
             >
-              First Name{" "} 
+              First Name{" "}
               {sortConfig?.key === "firstName"
                 ? sortConfig.direction === "asc"
                   ? "↑"
@@ -172,14 +186,54 @@ const UserListTable = ({ users }: { users: Users[] }) => {
         </tbody>
       </table>
       {selectedEditUser && (
-        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#000000c9]">
-          <div>
+        <div className="absolute top-0 left-0 w-screen h-screen flex justify-center bg-[#000000e0] z-10">
+          <div className="">
             <p className="text-xl">
               Editing:{" "}
               <span className="italic">
                 {selectedEditUser.firstName} {selectedEditUser.lastName}
               </span>
             </p>
+            <div>
+              <div className="flex justify-between items-center my-3">
+                <p className="text-sm text-red-300">
+                  Delete{" "}
+                  <span>
+                    {selectedEditUser.firstName} {selectedEditUser.lastName}
+                  </span>
+                </p>
+                <p
+                  className="cursor-pointer "
+                  onClick={() => setActiveDelete(true)}
+                >
+                  <Trash2 className="hover:text-red-300" />
+                </p>
+              </div>
+              <div
+                className={`${
+                  activeDelete
+                    ? "absolute bg-black top-1/2 left-1/2 -translate-1/2 w-full h-full flex flex-col items-center justify-center"
+                    : "hidden"
+                }`}
+              >
+                Are you sure you want to delete {selectedEditUser.firstName}{" "}
+                {selectedEditUser.lastName}?
+                <div className="flex gap-10 mt-5">
+                  <p
+                    className="px-4 py-2 bg-red-600 hover:bg-red-800  text-white rounded cursor-pointer"
+                    onClick={() => handleUserDelete(selectedEditUser._id!)}
+                  >
+                    Delete User
+                  </p>
+                  <p
+                    onClick={() => setActiveDelete(false)}
+                    className="px-4 py-2  bg-blue-600 hover:bg-blue-800 text-white rounded cursor-pointer"
+                  >
+                    Cancel Delete
+                  </p>
+                </div>
+              </div>
+            </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="mb-2">
                 <label className="text-sm block mb-1">First Name</label>

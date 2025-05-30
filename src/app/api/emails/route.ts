@@ -34,7 +34,6 @@ export async function POST(request: Request) {
       Team name: ${fplTeam}. Twitter ${twitter} and insta ${instagram}. 
       Paid for ${category} and link to receipt "${imageUrl}"`,
     });
-    console.log(result);
 
     return NextResponse.json({ accepted: result.accepted });
   } catch (error) {
