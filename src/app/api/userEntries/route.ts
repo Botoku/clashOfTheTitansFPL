@@ -64,8 +64,8 @@ export async function DELETE(request: NextRequest) {
   try {
     const data = await request.json();
     await connectionToDB();
-    const deletedEntry = await Entry.findByIdAndDelete(data)
-     return NextResponse.json({ deletedEntry, status: 200 });
+    const deletedEntry = await Entry.findOneAndDelete({ _id: data });
+    return NextResponse.json({ deletedEntry, status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ error, status: 400 });

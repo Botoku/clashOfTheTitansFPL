@@ -28,18 +28,18 @@ const RegistrationForm = () => {
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/s3-upload", {
+      const imageRes = await fetch("/api/s3-upload", {
         method: "POST",
         body: formData,
       });
 
-      const data = await res.json();
+      const data = await imageRes.json();
 
       const fileName = data.fileName;
 
-      if (data) {
+      if (fileName) {
         try {
-          const res = await fetch("/api/userEntries", {
+          const userRes = await fetch("/api/userEntries", {
             method: "POST",
             body: JSON.stringify({
               firstName,
@@ -53,7 +53,7 @@ const RegistrationForm = () => {
               imageUrl: `https://clash-of-the-titans-fpl.s3.us-east-1.amazonaws.com/${fileName}`,
             }),
           });
-          if (res.status === 200) {
+          if (userRes.status === 200) {
             setUploading(false);
             fetch("/api/emails", {
               method: "POST",

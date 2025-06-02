@@ -101,6 +101,7 @@ const UserListTable = ({ users }: { users: Users[] }) => {
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
+            <th className="px-6 py-3">S/N</th>
             <th
               onClick={() => handleSort("firstName")}
               className="cursor-pointer px-6 py-3 font text-gray-200"
@@ -150,6 +151,7 @@ const UserListTable = ({ users }: { users: Users[] }) => {
         <tbody>
           {sortedUsers?.map((user, i) => (
             <tr key={i} className="mb-4 border-b">
+              <td className="px-6 py-4">{i + 1}</td>
               <td className="px-6 py-4">{user.firstName}</td>
               <td className="px-6 py-4">{user.lastName}</td>
               <td className="px-6 py-4">{user.email}</td>
@@ -166,8 +168,8 @@ const UserListTable = ({ users }: { users: Users[] }) => {
                 {getCategory(user.category, "worldClass")}
               </td>
               <td className="px-6 py-4">{user.phoneNumber}</td>
-              <td className="px-6 py-4">{user.instagram}</td>
-              <td className="px-6 py-4">{user.twitter}</td>
+              <td className="px-6 py-4">{user.instagram || "Nil"}</td>
+              <td className="px-6 py-4">{user.twitter || "Nil"}</td>
               <td className="px-6 py-4">
                 <a className="hover:text-blue-300" href={user.imageUrl}>
                   {user.imageUrl}

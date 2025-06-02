@@ -19,11 +19,11 @@ const EntrySchema = new mongoose.Schema({
   },
   twitter: {
     type: String,
-    required: true,
+   
   },
   instagram: {
     type: String,
-    required: true,
+   
   },
   fplTeam: {
     type: String,
