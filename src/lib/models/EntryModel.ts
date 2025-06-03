@@ -11,11 +11,9 @@ const EntrySchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
   },
   phoneNumber: {
     type: String,
-    required: true,
   },
   twitter: {
     type: String,

@@ -122,14 +122,14 @@ const RegistrationForm = () => {
       case "lastName":
         if (!value.trim()) message = "Last name is required";
         break;
-      case "email":
-        if (!value.trim() || !/\S+@\S+\.\S+/.test(value))
-          message = "Valid email is required";
-        break;
-      case "phoneNumber":
-        if (!value.trim() || !/^\d+$/.test(value))
-          message = "Valid phone number is required";
-        break;
+      // case "email":
+      //   if (!value.trim() || !/\S+@\S+\.\S+/.test(value))
+      //     message = "Valid email is required";
+      //   break;
+      // case "phoneNumber":
+      //   if (!value.trim() || !/^\d+$/.test(value))
+      //     message = "Valid phone number is required";
+      //   break;
       default:
         break;
     }
@@ -146,15 +146,15 @@ const RegistrationForm = () => {
     const requiredFieldsFilled =
       firstName.trim() &&
       lastName.trim() &&
-      email.trim() &&
-      phoneNumber.trim() &&
+      // email.trim() &&
+      // phoneNumber.trim() &&
       fplTeam.trim() &&
       file !== null;
 
     const noErrors = Object.values(errors).every((msg) => !msg);
 
     setFormValid(!!requiredFieldsFilled && noErrors);
-  }, [firstName, lastName, email, phoneNumber, file, errors, fplTeam]);
+  }, [firstName, lastName, file, errors, fplTeam]);
 
   return (
     <>
@@ -216,13 +216,12 @@ const RegistrationForm = () => {
             <input
               value={email}
               onChange={(e) => setemail(e.target.value)}
-              onBlur={(e) => validateField("email", e.target.value)}
+              // onBlur={(e) => validateField("email", e.target.value)}
               type="text"
               name="email"
               id="email"
               className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-[#3B1B5E] peer"
               placeholder=" "
-              required
             />
             <label
               htmlFor="email"
@@ -230,21 +229,21 @@ const RegistrationForm = () => {
             >
               Email
             </label>
-            {errors.email && (
+            {/* {errors.email && (
               <span className="text-red-500 text-sm">{errors.email}</span>
-            )}
+            )} */}
           </div>
           <div className="relative z-0 w-full mb-5 group">
             <input
               value={phoneNumber}
               onChange={(e) => setphoneNumber(e.target.value)}
-              onBlur={(e) => validateField("phoneNumber", e.target.value)}
+              // onBlur={(e) => validateField("phoneNumber", e.target.value)}
               type="text"
               name="phoneNumber"
               id="phoneNumber"
               className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-[#3B1B5E] peer"
-              placeholder=" "
-              required
+              placeholder=""
+            
             />
             <label
               htmlFor="phoneNumber"
@@ -252,9 +251,9 @@ const RegistrationForm = () => {
             >
               Phone Number
             </label>
-            {errors.phoneNumber && (
+            {/* {errors.phoneNumber && (
               <span className="text-red-500 text-sm">{errors.phoneNumber}</span>
-            )}
+            )} */}
           </div>
         </div>
         <div className="flex gap-3">
@@ -262,7 +261,7 @@ const RegistrationForm = () => {
             <input
               value={twitter}
               onChange={(e) => settwitter(e.target.value)}
-              onBlur={(e) => validateField("twitter", e.target.value)}
+              // onBlur={(e) => validateField("twitter", e.target.value)}
               type="text"
               name="twitter"
               id="twitter"
@@ -275,15 +274,15 @@ const RegistrationForm = () => {
             >
               Twitter
             </label>
-            {errors.twitter && (
+            {/* {errors.twitter && (
               <span className="text-red-500 text-sm">{errors.twitter}</span>
-            )}
+            )} */}
           </div>
           <div className="relative z-0 w-full mb-5 group">
             <input
               value={instagram}
               onChange={(e) => setinstagram(e.target.value)}
-              onBlur={(e) => validateField("instagram", e.target.value)}
+              // onBlur={(e) => validateField("instagram", e.target.value)}
               type="text"
               name="instagram"
               id="instagram"
@@ -296,9 +295,9 @@ const RegistrationForm = () => {
             >
               Instagram
             </label>
-            {errors.instagram && (
+            {/* {errors.instagram && (
               <span className="text-red-500 text-sm">{errors.instagram}</span>
-            )}
+            )} */}
           </div>
         </div>
         <div className="relative z-0 w-full mb-5 group">
