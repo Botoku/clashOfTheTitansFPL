@@ -50,7 +50,7 @@ const RegistrationForm = () => {
               instagram,
               fplTeam,
               category: selectedOptions.join(", "),
-              imageUrl: `https://clash-of-the-titans-fpl.s3.us-east-1.amazonaws.com/${fileName}`,
+              imageUrl: `https://clash-of-titans.s3.us-east-2.amazonaws.com/${fileName}`,
             }),
           });
           if (userRes.status === 200) {
@@ -66,12 +66,12 @@ const RegistrationForm = () => {
                 instagram,
                 fplTeam,
                 category: selectedOptions.join(", "),
-                imageUrl: `https://clash-of-the-titans-fpl.s3.us-east-1.amazonaws.com/${fileName}`,
+                imageUrl: `https://clash-of-titans.s3.us-east-2.amazonaws.com/${fileName}`,
               }),
             });
             setResponseMessage("Submission SuccessFul. Redirecting to Whatsapp");
             setTimeout(() => {
-              window.open("https://chat.whatsapp.com/L8bwTpP0XMiJ4ahjAJD6Zp", "_blank");
+              // window.open("https://chat.whatsapp.com/L8bwTpP0XMiJ4ahjAJD6Zp", "_blank");
               setfirstName("");
               setlastName("");
               setemail("");

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const EntrySchema = new mongoose.Schema({
+const EntrySchemaNew = new mongoose.Schema({
   firstName: {
     type: String,
     required: true,
@@ -38,9 +38,13 @@ const EntrySchema = new mongoose.Schema({
   clashID: {
     type: String,
     default: "0"
+  },
+  season:{
+    type: String,
+    default: '2025/2026'
   }
 });
 
-const Entry = mongoose.models.Entry || mongoose.model("Entry", EntrySchema);
+const Entry2026 = mongoose.models.Entry2026 || mongoose.model("Entry2026", EntrySchemaNew);
 
-export default Entry;
+export default Entry2026;
