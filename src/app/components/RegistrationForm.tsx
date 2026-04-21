@@ -69,7 +69,9 @@ const RegistrationForm = () => {
                 imageUrl: `https://clash-of-titans.s3.us-east-2.amazonaws.com/${fileName}`,
               }),
             });
-            setResponseMessage("Submission SuccessFul. Redirecting to Whatsapp");
+            setResponseMessage(
+              "Submission SuccessFul. Redirecting to Whatsapp",
+            );
             setTimeout(() => {
               // window.open("https://chat.whatsapp.com/L8bwTpP0XMiJ4ahjAJD6Zp", "_blank");
               setfirstName("");
@@ -90,9 +92,24 @@ const RegistrationForm = () => {
       }
     } catch (error) {
       setUploading(false);
+              setResponseMessage("Error!!"); // Optionally clear the message after a while
+
       console.log(error);
     }
   };
+
+  console.log({
+    firstName,
+    lastName,
+    email,
+    phoneNumber: Number(phoneNumber),
+    twitter,
+    instagram,
+    fplTeam,
+    category: selectedOptions.join(", "),
+  });
+
+  console.log(selectedOptions);
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
 
@@ -137,10 +154,34 @@ const RegistrationForm = () => {
     setErrors((prev) => ({ ...prev, [name]: message }));
   };
   const transformOptions = (option: string) => {
-    if (option === "general") return "General - N4,000";
-    if (option === "h2h") return "H2H - N2,500";
-    if (option === "legends") return "Legends - N20,000";
-    if (option === "worldClass") return "WorldClass - N10,000";
+    if (option === "general")
+      return (
+        <div>
+          <p>General</p>
+          <p className="text-lime">N4,000</p>
+        </div>
+      );
+    if (option === "h2h")
+      return (
+        <div>
+          <p>H2H</p>
+          <p className="text-lime">N2,500</p>
+        </div>
+      );
+    if (option === "legends")
+      return (
+        <div>
+          <p>Legends</p>
+          <p className="text-lime">N20,000</p>
+        </div>
+      );
+    if (option === "worldClass")
+      return (
+        <div>
+          <p>WorldClass</p>
+          <p className="text-lime">N10,000</p>
+        </div>
+      );
   };
   useEffect(() => {
     const requiredFieldsFilled =
@@ -163,9 +204,17 @@ const RegistrationForm = () => {
           e.preventDefault();
           handleFormSubmit();
         }}
-        className="bg-gray-400 mx-auto px-2 lg:px-6 py-5 max-w-screen"
+        className=" mx-auto px-2 lg:px-6 py-5 max-w-screen"
       >
-        <div className="flex gap-3">
+        <p className="uppercase text-lime font-bold">Season 2025/2026</p>
+        <p className="uppercase text-white text-3xl font-bold">
+          league <span className="text-lime block">registration</span>
+        </p>
+        <div className="flex my-4">
+          <div className="w-1 mr-2 bg-lime" />
+          Personal Details
+        </div>
+        <div className="md:flex gap-3">
           <div className="relative z-0 w-full mb-5 group">
             <input
               value={firstName}
@@ -174,13 +223,13 @@ const RegistrationForm = () => {
               type="text"
               name="firstName"
               id="firstname"
-              className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-[#3B1B5E] peer"
+              className="block py-2.5 px-0 rounded w-full text-sm  bg-secondary border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-lime peer"
               placeholder=" "
               required
             />
             <label
               htmlFor="firstname"
-              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-[#3B1B5E] peer-focus:dark:text-[#3b1b5eda] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 left-3 scale-75 top-3  origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto   peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-8"
             >
               First Name
             </label>
@@ -196,13 +245,13 @@ const RegistrationForm = () => {
               type="text"
               name="lastName"
               id="lastname"
-              className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-[#3B1B5E] peer"
+              className="block py-2.5 px-0 rounded w-full text-sm  bg-secondary border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-lime peer"
               placeholder=" "
               required
             />
             <label
               htmlFor="lastname"
-              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-[#3B1B5E] peer-focus:dark:text-[#3b1b5eda] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 left-3 scale-75 top-3  origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-8"
             >
               Last Name
             </label>
@@ -211,7 +260,7 @@ const RegistrationForm = () => {
             )}
           </div>
         </div>
-        <div className="flex gap-3">
+        <div className="md:flex gap-3">
           <div className="relative z-0 w-full mb-5 group">
             <input
               value={email}
@@ -220,12 +269,12 @@ const RegistrationForm = () => {
               type="text"
               name="email"
               id="email"
-              className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-[#3B1B5E] peer"
+              className=" block py-2.5 px-0 rounded w-full text-sm  bg-secondary border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-lime peer"
               placeholder=" "
             />
             <label
               htmlFor="email"
-              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-[#3B1B5E] peer-focus:dark:text-[#3b1b5eda] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 left-3 scale-75 top-3  origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-8"
             >
               Email
             </label>
@@ -241,13 +290,12 @@ const RegistrationForm = () => {
               type="text"
               name="phoneNumber"
               id="phoneNumber"
-              className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-[#3B1B5E] peer"
+              className="block py-2.5 px-0 rounded w-full text-sm  bg-secondary border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-lime peer"
               placeholder=""
-            
             />
             <label
               htmlFor="phoneNumber"
-              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-[#3B1B5E] peer-focus:dark:text-[#3b1b5eda] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 left-3 scale-75 top-3  origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-8"
             >
               Phone Number
             </label>
@@ -256,7 +304,12 @@ const RegistrationForm = () => {
             )} */}
           </div>
         </div>
-        <div className="flex gap-3">
+        <div className="flex my-4">
+          <div className="w-1 mr-2 bg-lime" />
+          Identity & Team
+        </div>
+
+        <div className="md:flex gap-3">
           <div className="relative z-0 w-full mb-5 group">
             <input
               value={twitter}
@@ -265,12 +318,12 @@ const RegistrationForm = () => {
               type="text"
               name="twitter"
               id="twitter"
-              className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-[#3B1B5E] peer"
+              className="block py-2.5 px-0 rounded w-full text-sm  bg-secondary border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-lime peer"
               placeholder=" "
             />
             <label
               htmlFor="twitter"
-              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-[#3B1B5E] peer-focus:dark:text-[#3b1b5eda] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 left-3 scale-75 top-3  origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-8"
             >
               Twitter
             </label>
@@ -286,12 +339,12 @@ const RegistrationForm = () => {
               type="text"
               name="instagram"
               id="instagram"
-              className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-[#3B1B5E] peer"
+              className="block py-2.5 px-0 rounded w-full text-sm  bg-secondary border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-lime peer"
               placeholder=" "
             />
             <label
               htmlFor="instagram"
-              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-[#3B1B5E] peer-focus:dark:text-[#3b1b5eda] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 left-3 scale-75 top-3  origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-8"
             >
               Instagram
             </label>
@@ -300,6 +353,7 @@ const RegistrationForm = () => {
             )} */}
           </div>
         </div>
+
         <div className="relative z-0 w-full mb-5 group">
           <input
             value={fplTeam}
@@ -308,12 +362,12 @@ const RegistrationForm = () => {
             type="text"
             name="fplTeam"
             id="fplTeam"
-            className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-[#3B1B5E] peer"
+            className="block py-2.5 px-0 rounded w-full text-sm  bg-secondary border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-lime peer"
             placeholder=" "
           />
           <label
             htmlFor="fplTeam"
-            className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-[#3B1B5E] peer-focus:dark:text-[#3b1b5eda] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            className="peer-focus:font-medium absolute text-sm  duration-300 transform -translate-y-6 left-3 scale-75 top-3  origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-8"
           >
             FPL Team
           </label>
@@ -321,18 +375,46 @@ const RegistrationForm = () => {
             <span className="text-red-500 text-sm">{errors.fplTeam}</span>
           )}
         </div>
-        <div className="flex gap-3">
+        <div className="flex my-4">
+          <div className="w-1 mr-2 bg-lime" />
+          Choose Your League
+        </div>
+        <div className="flex gap-3 ">
           <div>
-            <p className="text-sm">
-              Select the League class you wish to pay for:
-            </p>
             <ul className="space-y-2">
+              {options.map((option) => (
+                <li
+                  key={option}
+                  className={`cursor-pointer bg-secondary max-w-24 rounded p-2 border-2 transition-all ${
+                    selectedOptions.includes(option)
+                      ? "border-lime bg-lime/10"
+                      : "border-gray-600 bg-secondary"
+                  }`}
+                  onClick={() => handleToggle(option)}
+                >
+                  <input
+                    type="text"
+                    id={option}
+                    // checked={selectedOptions.includes(option)}
+                    // onChange={() => handleToggle(option)}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor={option}
+                    className="cursor-pointer text-sm italic pointer-events-none"
+                  >
+                    {transformOptions(option)}
+                  </label>
+                </li>
+              ))}
+            </ul>
+            {/* <ul className="space-y-2">
               {options.map((option) => (
                 <li key={option} className="flex items-center space-x-2">
                   <input
-                    type="checkbox"
+                    type="text"
                     id={option}
-                    checked={selectedOptions.includes(option)}
+                    // checked={selectedOptions.includes(option)}
                     onChange={() => handleToggle(option)}
                     className="h-4 w-4"
                   />
@@ -344,11 +426,15 @@ const RegistrationForm = () => {
                   </label>
                 </li>
               ))}
-            </ul>
+            </ul> */}
           </div>
         </div>
 
-        <div className="my-3">
+        {/* <div className="my-3">
+          <div className="flex my-4">
+            <div className="w-1 mr-2 bg-lime" />
+            Proof of Payment
+          </div>
           <p className="italic text-sm">
             Upload image/screenshot of your payment receipt to continue
           </p>
@@ -361,6 +447,58 @@ const RegistrationForm = () => {
 
           <p className="mb-3">Max 5MB</p>
           {error && <>{error}</>}
+        </div> */}
+        <div className="my-3">
+          <div className="flex my-4">
+            <div className="w-1 mr-2 bg-lime" />
+            <span className="text-white font-semibold">Proof of Payment</span>
+          </div>
+
+          <label
+            htmlFor="receipt-upload"
+            className="flex flex-col items-center justify-center w-full py-8 px-4 rounded-lg border-2 border-dashed border-lime/40 bg-[#0d1b2a] cursor-pointer hover:border-lime/70 transition-colors group"
+          >
+            {/* Receipt icon */}
+            <div className="mb-3 text-lime/60 group-hover:text-lime transition-colors">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="40"
+                height="40"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="9" y1="13" x2="15" y2="13" />
+                <line x1="9" y1="17" x2="15" y2="17" />
+              </svg>
+            </div>
+
+            <p className="text-white font-semibold text-sm mb-1">
+              Upload Receipt
+            </p>
+            <p className="text-gray-400 text-xs mb-4">
+              Support JPEG or PNG (Max 5MB)
+            </p>
+
+            <span className="border border-lime text-lime text-xs font-bold tracking-widest uppercase px-5 py-2 rounded hover:bg-lime hover:text-black transition-colors">
+              {file ? file.name : "Choose File"}
+            </span>
+
+            <input
+              id="receipt-upload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </label>
+
+          {error && <p className="text-red-500 text-xs mt-2">{error}</p>}
         </div>
         {uploading && (
           <div className="w-full flex justify-center items-center">
@@ -372,7 +510,7 @@ const RegistrationForm = () => {
           <p className="font-bold w-max mx-auto text-sm">{responseMessage}</p>
         ) : (
           <button
-            className={`bg-[#3B1B5E] text-white px-3 py-2 w-20 mx-auto ${
+            className={`bg-lime text-black uppercase font-bold px-3 py-2 rounded mx-auto text-sm ${
               !formValid || uploading
                 ? "opacity-50 cursor-not-allowed"
                 : "cursor-pointer hover:font-bold"
@@ -380,7 +518,7 @@ const RegistrationForm = () => {
             type="submit"
             disabled={!formValid || uploading}
           >
-            Submit
+            Confirm Registration
           </button>
         )}
       </form>

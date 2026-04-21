@@ -16,7 +16,7 @@ async function uploadFileToS3(file:Buffer, fileName:string) {
         Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME,
         Key: `${fileName}-${Date.now()}`,
         Body: fileBuffer,
-        ContentType: "image/jpg"
+        ContentType: "image/jpeg" 
     }
     const command = new PutObjectCommand(params)
     await s3Client.send(command)

@@ -1,4 +1,4 @@
-import Entry from "@/lib/models/EntryModel";
+import Entry2026 from "@/lib/models/EntryModel";
 import connectionToDB from "@/lib/mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     } = await request.json();
 
     await connectionToDB();
-    const newEntry = await Entry.create({
+    const newEntry = await Entry2026.create({
       firstName,
       lastName,
       email,
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 export async function GET() {
   try {
     await connectionToDB();
-    const users = await Entry.find({});
+    const users = await Entry2026.find({});
     return NextResponse.json({ users, status: 200 });
   } catch (error) {
     console.log(error);
@@ -52,7 +52,7 @@ export async function PATCH(request: NextRequest) {
     const data = await request.json();
     await connectionToDB();
 
-    const newEntry = await Entry.findByIdAndUpdate(data._id, data);
+    const newEntry = await Entry2026.findByIdAndUpdate(data._id, data);
     return NextResponse.json({ newEntry, status: 200 });
   } catch (error) {
     console.log(error);
@@ -64,7 +64,7 @@ export async function DELETE(request: NextRequest) {
   try {
     const data = await request.json();
     await connectionToDB();
-    const deletedEntry = await Entry.findOneAndDelete({ _id: data });
+    const deletedEntry = await Entry2026.findOneAndDelete({ _id: data });
     return NextResponse.json({ deletedEntry, status: 200 });
   } catch (error) {
     console.log(error);
