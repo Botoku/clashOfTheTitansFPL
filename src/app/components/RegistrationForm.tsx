@@ -20,6 +20,7 @@ const RegistrationForm = () => {
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
+
   const handleFormSubmit = async () => {
     if (!file) return;
 
@@ -41,6 +42,9 @@ const RegistrationForm = () => {
         try {
           const userRes = await fetch("/api/userEntries", {
             method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify({
               firstName,
               lastName,
@@ -55,8 +59,13 @@ const RegistrationForm = () => {
           });
           if (userRes.status === 200) {
             setUploading(false);
+
             fetch("/api/emails", {
               method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+
               body: JSON.stringify({
                 firstName,
                 lastName,
@@ -68,6 +77,9 @@ const RegistrationForm = () => {
                 category: selectedOptions.join(", "),
                 imageUrl: `https://clash-of-titans.s3.us-east-2.amazonaws.com/${fileName}`,
               }),
+            }).catch((err) => {
+              setResponseMessage("Error");
+              console.log(err);
             });
             setResponseMessage(
               "Submission SuccessFul. Redirecting to Whatsapp",
@@ -88,28 +100,18 @@ const RegistrationForm = () => {
           }
         } catch (error) {
           console.log(error);
+        } finally {
+          setUploading(false);
         }
       }
     } catch (error) {
       setUploading(false);
-              setResponseMessage("Error!!"); // Optionally clear the message after a while
+      setResponseMessage("Error submitting! Please try again");
 
       console.log(error);
     }
   };
 
-  console.log({
-    firstName,
-    lastName,
-    email,
-    phoneNumber: Number(phoneNumber),
-    twitter,
-    instagram,
-    fplTeam,
-    category: selectedOptions.join(", "),
-  });
-
-  console.log(selectedOptions);
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
 
@@ -139,6 +141,9 @@ const RegistrationForm = () => {
       case "lastName":
         if (!value.trim()) message = "Last name is required";
         break;
+
+      case "fplTeam":
+        if (!value.trim()) message = "FPL team is required";
       // case "email":
       //   if (!value.trim() || !/\S+@\S+\.\S+/.test(value))
       //     message = "Valid email is required";
@@ -194,8 +199,10 @@ const RegistrationForm = () => {
 
     const noErrors = Object.values(errors).every((msg) => !msg);
 
-    setFormValid(!!requiredFieldsFilled && noErrors);
-  }, [firstName, lastName, file, errors, fplTeam]);
+    setFormValid(
+      !!requiredFieldsFilled && noErrors && selectedOptions.length > 0,
+    );
+  }, [firstName, lastName, file, errors, fplTeam, selectedOptions]);
 
   return (
     <>
@@ -375,40 +382,39 @@ const RegistrationForm = () => {
             <span className="text-red-500 text-sm">{errors.fplTeam}</span>
           )}
         </div>
-        <div className="flex my-4">
+        <div className="flex my-4 md:my-10">
           <div className="w-1 mr-2 bg-lime" />
           Choose Your League
         </div>
-        <div className="flex gap-3 ">
-          <div>
-            <ul className="space-y-2">
-              {options.map((option) => (
-                <li
-                  key={option}
-                  className={`cursor-pointer bg-secondary max-w-24 rounded p-2 border-2 transition-all ${
-                    selectedOptions.includes(option)
-                      ? "border-lime bg-lime/10"
-                      : "border-gray-600 bg-secondary"
-                  }`}
-                  onClick={() => handleToggle(option)}
+        <div className="flex gap-3 w-full my-6">
+          <ul className="space-y-2 md:flex w-full justify-around">
+            {options.map((option) => (
+              <li
+                key={option}
+                className={`cursor-pointer h-[70px] bg-secondary max-w-30 rounded hover:scale-105 px-3 py-2 border-2 transition-all ${
+                  selectedOptions.includes(option)
+                    ? "border-lime bg-lime/10"
+                    : "border-gray-600 bg-secondary"
+                }`}
+                onClick={() => handleToggle(option)}
+              >
+                <input
+                  type="text"
+                  id={option}
+                  // checked={selectedOptions.includes(option)}
+                  // onChange={() => handleToggle(option)}
+                  className="hidden"
+                />
+                <label
+                  htmlFor={option}
+                  className="cursor-pointer text-sm italic pointer-events-none"
                 >
-                  <input
-                    type="text"
-                    id={option}
-                    // checked={selectedOptions.includes(option)}
-                    // onChange={() => handleToggle(option)}
-                    className="hidden"
-                  />
-                  <label
-                    htmlFor={option}
-                    className="cursor-pointer text-sm italic pointer-events-none"
-                  >
-                    {transformOptions(option)}
-                  </label>
-                </li>
-              ))}
-            </ul>
-            {/* <ul className="space-y-2">
+                  {transformOptions(option)}
+                </label>
+              </li>
+            ))}
+          </ul>
+          {/* <ul className="space-y-2">
               {options.map((option) => (
                 <li key={option} className="flex items-center space-x-2">
                   <input
@@ -427,7 +433,6 @@ const RegistrationForm = () => {
                 </li>
               ))}
             </ul> */}
-          </div>
         </div>
 
         {/* <div className="my-3">
@@ -456,7 +461,7 @@ const RegistrationForm = () => {
 
           <label
             htmlFor="receipt-upload"
-            className="flex flex-col items-center justify-center w-full py-8 px-4 rounded-lg border-2 border-dashed border-lime/40 bg-[#0d1b2a] cursor-pointer hover:border-lime/70 transition-colors group"
+            className="flex flex-col items-center justify-center w-full py-8 px-4 rounded-lg border-2 border-dashed border-lime/40 bg-[#0d1b2a] cursor-pointer hover:border-lime/70 transition-colors group max-w-100 mx-auto"
           >
             {/* Receipt icon */}
             <div className="mb-3 text-lime/60 group-hover:text-lime transition-colors">
@@ -492,7 +497,7 @@ const RegistrationForm = () => {
             <input
               id="receipt-upload"
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png"
               className="hidden"
               onChange={handleFileChange}
             />

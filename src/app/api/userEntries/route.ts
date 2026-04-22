@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ newEntry, status: 201 });
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error, status: 400 });
+    return NextResponse.json({  message: 'Error with the server', status: 400 });
   }
 }
 
@@ -43,7 +43,7 @@ export async function GET() {
     return NextResponse.json({ users, status: 200 });
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error, status: 400 });
+    return NextResponse.json({ message: 'Error with the server', status: 400 });
   }
 }
 
@@ -56,7 +56,7 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ newEntry, status: 200 });
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error, status: 400 });
+    return NextResponse.json({ message: 'Error with the server', status: 400 });
   }
 }
 
@@ -68,6 +68,6 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ deletedEntry, status: 200 });
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error, status: 400 });
+    return NextResponse.json({ message: 'Error with the server', status: 400 });
   }
 }

@@ -6,7 +6,7 @@ export default function Home() {
     <div className=" py-6">
       <div className="flex mx-auto w-max mb-5 items-center">
         <h1 className="font-bold  text-lime">Clash of The Titans </h1>
-        <img className="w-10 h-10" src="/Clash of The Titans Logo.png" alt="" />
+        {/* <img className="w-10 h-10" src="/Clash of The Titans Logo.png" alt="Clash of the titans logo" /> */}
       </div>
       <RegistrationForm />
     </div>
