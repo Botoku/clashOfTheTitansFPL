@@ -36,6 +36,6 @@ export async function POST(request:NextRequest){
         return NextResponse.json({success: true, fileName})
     }
     catch(error){
-        return NextResponse.json({error})
+        return NextResponse.json({error})  
     }
 }
