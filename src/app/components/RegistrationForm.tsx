@@ -85,7 +85,17 @@ const RegistrationForm = () => {
               "Submission SuccessFul. Redirecting to Whatsapp",
             );
             setTimeout(() => {
-              window.open("https://chat.whatsapp.com/Kvrj16CqLVhBfok5CC6YHM", "_blank");
+              // window.open("https://chat.whatsapp.com/Kvrj16CqLVhBfok5CC6YHM", "_blank");
+              const WHATSAPP_GROUP_URL =
+                "https://chat.whatsapp.com/Kvrj16CqLVhBfok5CC6YHM";
+              const newWindow = window.open(WHATSAPP_GROUP_URL, "_blank");
+              if (
+                !newWindow ||
+                newWindow.closed ||
+                typeof newWindow.closed === "undefined"
+              ) {
+                setResponseMessage("WHATSAPP_BLOCKED");
+              }
               setfirstName("");
               setlastName("");
               setemail("");
@@ -510,9 +520,40 @@ const RegistrationForm = () => {
             <Loading />
           </div>
         )}
-
+        {/* 
         {responseMessage ? (
           <p className="font-bold w-max mx-auto text-sm">{responseMessage}</p>
+        ) : (
+          <button
+            className={`bg-lime text-black uppercase font-bold px-3 py-2 rounded mx-auto text-sm ${
+              !formValid || uploading
+                ? "opacity-50 cursor-not-allowed"
+                : "cursor-pointer hover:font-bold"
+            }`}
+            type="submit"
+            disabled={!formValid || uploading}
+          >
+            Confirm Registration
+          </button>
+        )} */}
+        {responseMessage ? (
+          <div className="font-bold w-max mx-auto text-sm text-center">
+            {responseMessage === "WHATSAPP_BLOCKED" ? (
+              <div className="flex flex-col items-center gap-2">
+                <p className="text-yellow-400">Popup was blocked.</p>
+                <a
+                  href="https://chat.whatsapp.com/Kvrj16CqLVhBfok5CC6YHM"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-lime text-black uppercase font-bold px-4 py-2 rounded hover:opacity-80 transition-opacity"
+                >
+                  Join WhatsApp Group →
+                </a>
+              </div>
+            ) : (
+              <p>{responseMessage}</p>
+            )}
+          </div>
         ) : (
           <button
             className={`bg-lime text-black uppercase font-bold px-3 py-2 rounded mx-auto text-sm ${
