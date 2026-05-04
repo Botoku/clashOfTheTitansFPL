@@ -85,7 +85,7 @@ const RegistrationForm = () => {
               "Submission SuccessFul. Redirecting to Whatsapp",
             );
             setTimeout(() => {
-              // window.open("https://chat.whatsapp.com/L8bwTpP0XMiJ4ahjAJD6Zp", "_blank");
+              window.open("https://chat.whatsapp.com/Kvrj16CqLVhBfok5CC6YHM", "_blank");
               setfirstName("");
               setlastName("");
               setemail("");
