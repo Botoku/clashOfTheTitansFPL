@@ -95,6 +95,7 @@ const RegistrationForm = () => {
                 typeof newWindow.closed === "undefined"
               ) {
                 setResponseMessage("WHATSAPP_BLOCKED");
+                return
               }
               setfirstName("");
               setlastName("");
