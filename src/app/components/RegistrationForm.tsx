@@ -60,6 +60,22 @@ const RegistrationForm = () => {
           if (userRes.status === 200) {
             setUploading(false);
 
+            const WHATSAPP_GROUP_URL =
+              "https://chat.whatsapp.com/Kvrj16CqLVhBfok5CC6YHM";
+            const newWindow = window.open(WHATSAPP_GROUP_URL, "_blank");
+            if (
+              !newWindow ||
+              newWindow.closed ||
+              typeof newWindow.closed === "undefined"
+            ) {
+              setResponseMessage("WHATSAPP_BLOCKED");
+              return;
+            } else {
+              setResponseMessage(
+                "Submission Successful. Redirecting to WhatsApp",
+              );
+            }
+
             fetch("/api/emails", {
               method: "POST",
               headers: {
@@ -81,22 +97,10 @@ const RegistrationForm = () => {
               setResponseMessage("Error");
               console.log(err);
             });
-            setResponseMessage(
-              "Submission SuccessFul. Redirecting to Whatsapp",
-            );
+        
             setTimeout(() => {
               // window.open("https://chat.whatsapp.com/Kvrj16CqLVhBfok5CC6YHM", "_blank");
-              const WHATSAPP_GROUP_URL =
-                "https://chat.whatsapp.com/Kvrj16CqLVhBfok5CC6YHM";
-              const newWindow = window.open(WHATSAPP_GROUP_URL, "_blank");
-              if (
-                !newWindow ||
-                newWindow.closed ||
-                typeof newWindow.closed === "undefined"
-              ) {
-                setResponseMessage("WHATSAPP_BLOCKED");
-                return
-              }
+
               setfirstName("");
               setlastName("");
               setemail("");
