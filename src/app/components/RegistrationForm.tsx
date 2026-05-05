@@ -69,7 +69,6 @@ const RegistrationForm = () => {
               typeof newWindow.closed === "undefined"
             ) {
               setResponseMessage("WHATSAPP_BLOCKED");
-              return;
             } else {
               setResponseMessage(
                 "Submission Successful. Redirecting to WhatsApp",
@@ -97,21 +96,17 @@ const RegistrationForm = () => {
               setResponseMessage("Error");
               console.log(err);
             });
-        
-            setTimeout(() => {
-              // window.open("https://chat.whatsapp.com/Kvrj16CqLVhBfok5CC6YHM", "_blank");
 
-              setfirstName("");
-              setlastName("");
-              setemail("");
-              setphoneNumber("");
-              settwitter("");
-              setinstagram("");
-              setfplTeam("");
-              setFile(null);
-              setSelectedOptions([]);
-              setResponseMessage(""); // Optionally clear the message after a while
-            }, 3000);
+            setfirstName("");
+            setlastName("");
+            setemail("");
+            setphoneNumber("");
+            settwitter("");
+            setinstagram("");
+            setfplTeam("");
+            setFile(null);
+            setSelectedOptions([]);
+            setResponseMessage(""); // Optionally clear the message after a while
           }
         } catch (error) {
           console.log(error);
