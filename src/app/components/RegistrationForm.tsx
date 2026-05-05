@@ -106,7 +106,6 @@ const RegistrationForm = () => {
             setfplTeam("");
             setFile(null);
             setSelectedOptions([]);
-            setResponseMessage(""); // Optionally clear the message after a while
           }
         } catch (error) {
           console.log(error);
