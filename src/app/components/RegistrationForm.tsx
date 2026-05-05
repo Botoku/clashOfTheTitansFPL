@@ -62,18 +62,18 @@ const RegistrationForm = () => {
 
             const WHATSAPP_GROUP_URL =
               "https://chat.whatsapp.com/Kvrj16CqLVhBfok5CC6YHM";
-            const newWindow = window.open(WHATSAPP_GROUP_URL, "_blank");
-            if (
-              !newWindow ||
-              newWindow.closed ||
-              typeof newWindow.closed === "undefined"
-            ) {
-              setResponseMessage("WHATSAPP_BLOCKED");
-            } else {
-              setResponseMessage(
-                "Submission Successful. Redirecting to WhatsApp",
-              );
-            }
+
+            setResponseMessage(
+              "Submission Successful. Redirecting to WhatsApp",
+            );
+
+            // Attempt to open the WhatsApp app via deep link
+            window.location.href = `https://chat.whatsapp.com/Kvrj16CqLVhBfok5CC6YHM`;
+
+            // After 1 second, fall back to the web URL in case the app didn't open
+            setTimeout(() => {
+              window.open(WHATSAPP_GROUP_URL, "_blank");
+            }, 1000);
 
             fetch("/api/emails", {
               method: "POST",
