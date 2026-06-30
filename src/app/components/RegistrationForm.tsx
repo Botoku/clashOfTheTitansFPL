@@ -37,10 +37,8 @@ const RegistrationForm = () => {
       });
 
       const data = await imageRes.json();
-      console.log(data)
 
       const fileName = data.url;
-      console.log(fileName)
 
       if (fileName) {
         try {
