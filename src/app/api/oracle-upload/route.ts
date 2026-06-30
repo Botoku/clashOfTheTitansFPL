@@ -1,13 +1,12 @@
 // src/app/api/oracle-upload/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import common from "oci-common";
-import os from "oci-objectstorage";
-
-/**
- * Loads the OCI private key from a base64-encoded env var.
- * Set OCI_PRIVATE_KEY_B64 in .env.local (and in your hosting platform's
- * environment variables for production) to the base64 string of your .pem file.
- */
+import * as common from "oci-common";
+import * as os from "oci-objectstorage";
+ 
+// Force the Node.js runtime (not Edge) — the OCI SDK relies on Node APIs
+// (crypto, Buffer, etc.) that aren't available in Vercel's Edge runtime.
+export const runtime = "nodejs";
+ 
 function loadPrivateKey(): string {
   const b64 = process.env.OCI_PRIVATE_KEY;
   if (!b64) {
