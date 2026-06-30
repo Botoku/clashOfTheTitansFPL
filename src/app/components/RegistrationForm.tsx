@@ -29,14 +29,17 @@ const RegistrationForm = () => {
     formData.append("file", file);
 
     try {
-      const imageRes = await fetch("/api/s3-upload", {
+      // const imageRes = await fetch("/api/s3-upload", {
+      const imageRes = await fetch("/api/oracle-upload", {
         method: "POST",
         body: formData,
       });
 
       const data = await imageRes.json();
+      console.log(data)
 
-      const fileName = data.fileName;
+      const fileName = data.url;
+      console.log(fileName)
 
       if (fileName) {
         try {
@@ -54,7 +57,7 @@ const RegistrationForm = () => {
               instagram,
               fplTeam,
               category: selectedOptions.join(", "),
-              imageUrl: `https://clash-of-titans.s3.us-east-2.amazonaws.com/${fileName}`,
+              imageUrl: fileName,
             }),
           });
           if (userRes.status === 200) {
@@ -90,7 +93,7 @@ const RegistrationForm = () => {
                 instagram,
                 fplTeam,
                 category: selectedOptions.join(", "),
-                imageUrl: `https://clash-of-titans.s3.us-east-2.amazonaws.com/${fileName}`,
+                imageUrl: fileName,
               }),
             }).catch((err) => {
               setResponseMessage("Error");
