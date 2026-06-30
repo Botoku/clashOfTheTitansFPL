@@ -2,23 +2,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import common from "oci-common";
 import os from "oci-objectstorage";
-import fs from "fs";
-import path from "path";
+
+/**
+ * Loads the OCI private key from a base64-encoded env var.
+ * Set OCI_PRIVATE_KEY_B64 in .env.local (and in your hosting platform's
+ * environment variables for production) to the base64 string of your .pem file.
+ */
+function loadPrivateKey(): string {
+  const b64 = process.env.OCI_PRIVATE_KEY;
+  if (!b64) {
+    throw new Error("OCI_PRIVATE_KEY_B64 is not set");
+  }
+  return Buffer.from(b64, "base64").toString("utf-8");
+}
 
 export async function POST(req: NextRequest) {
   try {
-    // ── 1. Read the private key from disk inside the handler ──
-    const keyPath = process.env.OCI_PRIVATE_KEY;
-    if (!keyPath) {
-      return NextResponse.json({ error: "OCI_PRIVATE_KEY_PATH is not set in .env.local" }, { status: 500 });
-    }
-
-    const resolved = path.resolve(process.cwd(), keyPath);
-    if (!fs.existsSync(resolved)) {
-      return NextResponse.json({ error: `Key file not found: ${resolved}` }, { status: 500 });
-    }
-
-    const privateKey = fs.readFileSync(resolved, "utf-8");
+    // ── 1. Load the private key ──
+    const privateKey = loadPrivateKey();
 
     // ── 2. Build provider and client inside the handler ──
     const provider = new common.SimpleAuthenticationDetailsProvider(
